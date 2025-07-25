@@ -1,4 +1,4 @@
-package com.palomastyle
+package com.devvi.palomastyle
 
 import android.app.Application
 import com.facebook.react.PackageList
