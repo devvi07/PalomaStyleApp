@@ -100,7 +100,7 @@ export const HomeScreen = ({ navigation }: any) => {
                 </View>
                 
                 {/** el gap es de 40 para usuarios, para admin de 20 */}
-                <View style={[styles.innerContainer, { gap: 20 }]}>
+                <View style={[styles.innerContainer, { gap: 40 }]}>
 
                 <TouchableOpacity 
                     onPress={()=>{ 
@@ -163,7 +163,7 @@ export const HomeScreen = ({ navigation }: any) => {
                 </TouchableOpacity>
 
                 {/** Add product */}
-                <TouchableOpacity 
+                {/*<TouchableOpacity 
                     onPress={()=>{ 
                         navigation.navigate('AddProductos');
                      }}
@@ -176,7 +176,7 @@ export const HomeScreen = ({ navigation }: any) => {
                         />
                         <Text style={{ color: '#ff9887', fontWeight: '700' }}>Agregar</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
 
             </View>
                     </>:

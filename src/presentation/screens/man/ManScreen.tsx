@@ -1,11 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'react-native-paper';
+import { ActivityIndicator, Card, Icon } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { formatMiles } from '../../../utils/Utils';
+import { useIsFocused } from '@react-navigation/native';
 
 export const ManScreen = ({ navigation }: any) => {
+
+    const isFocused = useIsFocused();
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
+
+    const getData = async () => {
+
+        fetch("https://pqt-calva-ws.onrender.com/api/articulos", {
+            method: "GET",
+            redirect: "follow"
+        }).then(async (response) => {
+            const codigo = response.status;
+            const data = await response.json();
+            return { codigo, data };
+        }).then((result) => {
+            console.log(result)
+            if (result.codigo == 200) {
+                console.log("🚀 ~ getArticulos ~ result.data:", result.data);
+
+                if (result.data && result.data.length > 0) {
+                    const oMan = result.data.filter((item: any) => item.clasif == 'Hombre');
+                    console.log("🚀 ~ getData ~ oMan:", oMan)
+                    setData(oMan);
+                    setLoading(true);
+                } else {
+                    setData([]);
+                    setLoading(true);
+                }
+            }
+
+        }).catch((error) => {
+            console.error(error);
+            setData([]);
+            setLoading(true);
+        });
+
+    };
+
+    useEffect(() => {
+        getData();
+    }, [isFocused]);
+
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }} edges={['top', 'bottom']}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#ff9887' }} edges={['top', 'bottom']}>
             <View style={{ flex: 1, backgroundColor: '#FFF' }}>
 
                 <View style={styles.container}>
@@ -24,30 +68,57 @@ export const ManScreen = ({ navigation }: any) => {
 
                 <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
-                    <ScrollView>
+                    {
+                        loading ?
+                            <>
+                                <View style={{ backgroundColor: '#fff', flex: 1 }}>
 
-                        <Text>MAN</Text>
+                                    {
+                                        data.length > 0 ?
+                                            <ScrollView contentContainerStyle={styles.containerCard}>
 
-                    </ScrollView>
+                                                {data.map((item: any, index) => (
+                                                    <View key={index.toString()} style={styles.cardWrapper}>
+                                                        <Card style={styles.card} onPress={() => { navigation.navigate('ProductDetail', { item: item }); }}>
+                                                            <Card.Cover source={{ uri: new String(item.fotos).split(',')[0] }} style={styles.image} />
+                                                            <Card.Content style={styles.content}>
+                                                                <Text style={styles.title}>{item.descripcion}</Text>
+                                                                <Text style={styles.price}>{formatMiles(item.precio, true)}</Text>
+                                                            </Card.Content>
+                                                        </Card>
+                                                    </View>
+                                                ))}
+
+                                            </ScrollView> :
+                                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                <Text style={{ textAlign: 'center', color: '#ff9887', fontSize: 17, fontWeight: '500' }}>No existen productos para hombre</Text>
+                                            </View>
+                                    }
+
+                                </View>
+                            </> : <View style={{ justifyContent: 'center', alignContent: 'center', marginTop: 250 }}>
+                                <ActivityIndicator animating={true} color={'#ff9887'} size={50} />
+                            </View>
+                    }
 
                 </View>
 
                 <View style={[styles.innerContainer, { gap: 40 }]}>
 
-                    <TouchableOpacity 
-                                        onPress={()=>{ 
-                                            navigation.navigate('HomeScreen');
-                                         }}
-                                    >
-                                        <View style={{ alignItems: 'center', padding: 7 }}>
-                                            <Icon
-                                                source="home"
-                                                color={'#ff9887'}
-                                                size={40}
-                                            />
-                                            <Text style={{ color: '#ff9887', fontWeight: '700' }}>Inico</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('HomeScreen');
+                        }}
+                    >
+                        <View style={{ alignItems: 'center', padding: 7 }}>
+                            <Icon
+                                source="home"
+                                color={'#ff9887'}
+                                size={40}
+                            />
+                            <Text style={{ color: '#ff9887', fontWeight: '700' }}>Inico</Text>
+                        </View>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => {
@@ -178,5 +249,40 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginHorizontal: 16,
         marginBottom: 10
+    },
+
+    containerCard: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
+    cardWrapper: {
+        width: '48%',
+        marginBottom: 15,
+    },
+    card: {
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    image: {
+        height: 120,
+        borderRadius: 0,
+    },
+    content: {
+        paddingVertical: 8,
+        alignItems: 'center',
+        backgroundColor: '#FFF'
+    },
+    title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    price: {
+        fontSize: 13,
+        color: '#4CAF50',
+        marginTop: 4,
+        fontWeight: '600',
     },
 });

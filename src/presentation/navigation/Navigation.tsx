@@ -5,6 +5,7 @@ import { ManScreen } from "../screens/man/ManScreen";
 import { KidsScreen } from "../screens/kids/KidsScreen";
 import { ProductDetail } from "../screens/products/ProductDetail";
 import { AddProductosScreen } from "../screens/products/AddProductosScreen";
+import { EditarProductos } from "../screens/products/EditarProductos";
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -13,6 +14,7 @@ export type RootStackParams = {
   Kids: undefined;
   ProductDetail: undefined;
   AddProductos: undefined;
+  EditarProductos: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParams>();
@@ -108,6 +110,21 @@ export const Navigation = () => {
       <Stack.Screen
         name="AddProductos"
         component={AddProductosScreen}
+        options={{
+          cardStyleInterpolator: fadeAnimation,
+          headerShown: false,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#FFF',
+          },
+          headerTintColor: '#ff9887',
+          //headerTitleAlign: 'left'
+        }}
+      />
+
+      <Stack.Screen
+        name="EditarProductos"
+        component={EditarProductos}
         options={{
           cardStyleInterpolator: fadeAnimation,
           headerShown: false,

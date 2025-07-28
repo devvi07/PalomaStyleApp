@@ -82,6 +82,7 @@ export const AddProductosScreen = ({ route, navigation }: any) => {
             if (result.codigo == 201) {
                 console.log('Articulo creado exitosamente!');
                 setLoading(true);
+                navigation.navigate('HomeScreen');
                 //setAcept(1);
                 //setMessage('¡Cliente registrado exitosamente!');
                 //setLoading(true);
