@@ -136,7 +136,7 @@ export const AddProductosScreen = ({ route, navigation }: any) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#ff9887' }} edges={['top', 'bottom']}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f8d6c3' }} edges={['top', 'bottom']}>
             <View style={{ flex: 1, backgroundColor: '#FFF' }}>
 
                 <View style={styles.container}>

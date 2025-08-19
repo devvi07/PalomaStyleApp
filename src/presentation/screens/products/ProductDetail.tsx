@@ -113,7 +113,8 @@ export const ProductDetail = ({ route, navigation }: any) => {
                   <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{`Precio: `}<Text style={{ fontWeight: '400' }}>{`${formatMiles(item.precio, true)}`}</Text></Text>
                 </View>
 
-                {/*<View style={{ marginHorizontal: 20 }}>
+                {/*Este bloque solo es para el admin*/}
+                <View style={{ marginHorizontal: 20 }}>
                   <Button
                     icon="lead-pencil"
                     mode="contained"
@@ -137,7 +138,7 @@ export const ProductDetail = ({ route, navigation }: any) => {
                   >
                     Eliminar producto
                   </Button>
-                </View>*/}
+                </View>
 
               </View>
 

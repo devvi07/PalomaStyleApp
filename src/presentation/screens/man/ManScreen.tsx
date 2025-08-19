@@ -4,6 +4,7 @@ import { ActivityIndicator, Card, Icon } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatMiles } from '../../../utils/Utils';
 import { useIsFocused } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 export const ManScreen = ({ navigation }: any) => {
 
@@ -49,7 +50,7 @@ export const ManScreen = ({ navigation }: any) => {
     }, [isFocused]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#ff9887' }} edges={['top', 'bottom']}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f8d6c3' }} edges={['top', 'bottom']}>
             <View style={{ flex: 1, backgroundColor: '#FFF' }}>
 
                 <View style={styles.container}>
@@ -80,7 +81,15 @@ export const ManScreen = ({ navigation }: any) => {
                                                 {data.map((item: any, index) => (
                                                     <View key={index.toString()} style={styles.cardWrapper}>
                                                         <Card style={styles.card} onPress={() => { navigation.navigate('ProductDetail', { item: item }); }}>
-                                                            <Card.Cover source={{ uri: new String(item.fotos).split(',')[0] }} style={styles.image} />
+                                                            <FastImage
+                                                                style={{ width: 'auto', height: 100, borderRadius: 10 }}
+                                                                source={{
+                                                                    //uri: `${item.foto}`,
+                                                                    uri: new String(item.fotos).split(',')[0],
+                                                                    priority: FastImage.priority.normal,
+                                                                }}
+                                                                resizeMode={FastImage.resizeMode.cover}
+                                                            />
                                                             <Card.Content style={styles.content}>
                                                                 <Text style={styles.title}>{item.descripcion}</Text>
                                                                 <Text style={styles.price}>{formatMiles(item.precio, true)}</Text>

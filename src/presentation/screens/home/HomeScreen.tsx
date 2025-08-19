@@ -5,6 +5,7 @@ import { ActivityIndicator, Button, Card, Icon } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatMiles, requestAllPermissions } from '../../../utils/Utils';
 import { useIsFocused } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 export const HomeScreen = ({ navigation }: any) => {
 
@@ -53,7 +54,7 @@ export const HomeScreen = ({ navigation }: any) => {
     }, [isFocused]);
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#ff9887' }} edges={['top', 'bottom']}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f8d6c3' }} edges={['top', 'bottom']}>
             <View style={{ flex: 1, backgroundColor: '#FFF' }}>
 
                 <View style={styles.container}>
@@ -82,7 +83,16 @@ export const HomeScreen = ({ navigation }: any) => {
                             {data.map((item: any, index) => (
                                 <View key={index.toString()} style={styles.cardWrapper}>
                                     <Card style={styles.card} onPress={()=>{ navigation.navigate('ProductDetail',{item: item}); }}>
-                                        <Card.Cover source={{ uri: new String(item.fotos).split(',')[0] }} style={styles.image} />
+                                        {/*<Card.Cover source={{ uri: new String(item.fotos).split(',')[0] }} style={styles.image} />*/}
+                                        <FastImage
+                                            style={{ width: 'auto', height: 100, borderRadius: 10 }}
+                                            source={{
+                                                //uri: `${item.foto}`,
+                                                uri: new String(item.fotos).split(',')[0],
+                                                priority: FastImage.priority.normal,
+                                            }}
+                                            resizeMode={FastImage.resizeMode.cover}
+                                        />
                                         <Card.Content style={styles.content}>
                                             <Text style={styles.title}>{item.descripcion}</Text>
                                             <Text style={styles.price}>{formatMiles(item.precio, true)}</Text>
@@ -93,14 +103,14 @@ export const HomeScreen = ({ navigation }: any) => {
 
                         </ScrollView>:
                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'center', color: '#ff9887', fontSize: 17, fontWeight: '500' }}>No existen productos en tu cátalogo</Text>
+                            <Text style={{ textAlign: 'center', color: '#f8d6c3', fontSize: 17, fontWeight: '500' }}>No existen productos en tu cátalogo</Text>
                         </View>
                     }
 
                 </View>
                 
                 {/** el gap es de 40 para usuarios, para admin de 20 */}
-                <View style={[styles.innerContainer, { gap: 40 }]}>
+                <View style={[styles.innerContainer, { gap: 20 }]}>
 
                 <TouchableOpacity 
                     onPress={()=>{ 
@@ -163,7 +173,7 @@ export const HomeScreen = ({ navigation }: any) => {
                 </TouchableOpacity>
 
                 {/** Add product */}
-                {/*<TouchableOpacity 
+                <TouchableOpacity 
                     onPress={()=>{ 
                         navigation.navigate('AddProductos');
                      }}
@@ -176,7 +186,7 @@ export const HomeScreen = ({ navigation }: any) => {
                         />
                         <Text style={{ color: '#ff9887', fontWeight: '700' }}>Agregar</Text>
                     </View>
-                </TouchableOpacity>*/}
+                </TouchableOpacity>
 
             </View>
                     </>:
